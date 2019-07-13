@@ -44,7 +44,7 @@ public class VersionMatched<T> {
      *
      * @apiNote usage:
      * new VersionMatched(
-     *     new Reflection(getLogger()),
+     *     java.util.logging.Logger,
      *     CmdRegistry1_14_R1.class,
      *     CommandRegistry1_13_R2.class,
      *     andSooooOnnnnnn1_13_R1.class
