@@ -47,6 +47,10 @@
             <id>spigotmc-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
         </repository>
+        <repository>
+            <id>bintray-portlek-portlek</id>
+            <url>https://dl.bintray.com/portlek/portlek</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -73,5 +77,13 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
+
+    <distributionManagement>
+        <repository>
+            <id>bintray-portlek-portlek</id>
+            <name>portlek-portlek</name>
+            <url>https://api.bintray.com/maven/portlek/portlek/version-matched/;publish=1</url>
+        </repository>
+    </distributionManagement>
 
 </project>
