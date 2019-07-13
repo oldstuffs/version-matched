@@ -41,14 +41,6 @@ public class VersionMatched<T> {
      * @param logger  Logger
      * @param classes Classes which will create objec
      *                (i.e. "Cmd1_14_R1.class")
-     *
-     * @apiNote usage:
-     * new VersionMatched(
-     *     java.util.logging.Logger,
-     *     CmdRegistry1_14_R1.class,
-     *     CommandRegistry1_13_R2.class,
-     *     andSooooOnnnnnn1_13_R1.class
-     * );
      */
     @SafeVarargs
     public VersionMatched(@NotNull Logger logger,
