@@ -9,6 +9,8 @@ import org.cactoos.scalar.FirstOf;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.logging.Logger;
 
 /**
  * Matches classes with your server version and choose
@@ -26,38 +28,42 @@ public class VersionMatched<T> {
     private final Reflection reflection;
 
     /**
+     * You server version (i.e. 1_14_R1, 1_8_R2)
+     */
+    private final String serverVersion;
+
+    /**
      * Classes that match.
      */
     private final List<VersionClass<T>> versionClasses;
 
     /**
-     * You server version (i.e. 1_14_R1)
-     */
-    private final String serverVersion;
-
-    /**
-     * @param reflection Reflection class
-     * @param classes    Classes which will create object
-     *                   (i.e. "Cmd1_14_R1.class")
+     * @param logger  Logger
+     * @param classes Classes which will create objec
+     *                (i.e. "Cmd1_14_R1.class")
      *
-     * usage new VersionMatched(
-     *          new Reflection(getLogger()),
-     *          CmdRegistry1_14_R1.class,
-     *          CommandRegistry1_13_R2.class,
-     *          andSooooOnnnnnn1_13_R1.class
-     *       );
+     * @apiNote usage:
+     * new VersionMatched(
+     *     new Reflection(getLogger()),
+     *     CmdRegistry1_14_R1.class,
+     *     CommandRegistry1_13_R2.class,
+     *     andSooooOnnnnnn1_13_R1.class
+     * );
      */
     @SafeVarargs
-    public VersionMatched(@NotNull Reflection reflection,
+    public VersionMatched(@NotNull Logger logger,
                           @NotNull final Class<? extends T>... classes) {
-        this.reflection = reflection;
+        if (classes.length == 0)
+            throw new NoSuchElementException("#VersionMatched(#Logger, #Class<T>[]) There is not any class element!");
+
+        this.reflection = new Reflection(logger);
+        this.serverVersion = reflection.getCraftBukkitVersion().substring(1);
         this.versionClasses = new ListOf<>(
             new Mapped<>(
                 VersionClass<T>::new,
                 new IterableOf<>(classes)
             )
         );
-        this.serverVersion = reflection.getCraftBukkitVersion().substring(1);
     }
 
     /**
@@ -81,7 +87,7 @@ public class VersionMatched<T> {
             versionClasses,
             () -> {
                 throw new RuntimeException(
-                    "Unsupported version \"" + serverVersion + "\", report this to developers of core"
+                    "#match() couldn't find any matched class on \"" + serverVersion + "\" version!"
                 );
             }
         );
@@ -89,9 +95,8 @@ public class VersionMatched<T> {
         try {
             return firsOf.value().getVersionClass();
         } catch (Exception e) {
-            throw new RuntimeException(
-                "#match() couldn't find any matched class!"
-            );
+            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
