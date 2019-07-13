@@ -7,6 +7,7 @@ import org.cactoos.list.ListOf;
 import org.cactoos.list.Mapped;
 import org.cactoos.scalar.FirstOf;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -64,6 +65,7 @@ public class VersionMatched<T> {
      * @param args Constructor arguments
      * @return the object, or throws
      */
+    @Nullable
     public T instance(Object... args) {
         return reflection.newInstance(match(), args);
     }
