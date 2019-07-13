@@ -25,6 +25,7 @@ class VersionClass<T> {
         this(clazz.getSimpleName(), clazz);
     }
 
+    @NotNull
     Class<? extends T> getVersionClass() {
         return clazz;
     }
