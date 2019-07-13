@@ -40,7 +40,7 @@ public class VersionMatched<T> {
     /**
      * @param logger  Logger
      * @param classes Classes which will create objec
-     *                (i.e. "Cmd1_14_R1.class")
+     *                (i.e. Cmd1_14_R2.class, CmdRgstry1_8_R3.class)
      */
     @SafeVarargs
     public VersionMatched(@NotNull Logger logger,
