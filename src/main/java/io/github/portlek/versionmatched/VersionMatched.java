@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  * Matches classes with your server version and choose
  * the right class for instantiating instead of you.
  *
- * @param <T> Interface all of the classes
+ * @param <T> The interface of classes.
  */
 public class VersionMatched<T> {
 
