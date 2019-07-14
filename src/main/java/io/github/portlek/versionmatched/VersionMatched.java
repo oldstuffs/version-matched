@@ -52,14 +52,14 @@ public class VersionMatched<T> {
     public VersionMatched(@NotNull Logger logger,
                           @NotNull final Class<? extends T>... classes) {
         if (classes.length == 0)
-            throw new NoSuchElementException("#VersionMatched(#Logger, #Class<T>[]) There is not any class element!");
+            throw new NoSuchElementException("#VersionMatched(#Logger, #Class<T>[]) -> There is not any class element!");
 
         this.logger = logger;
         this.reflection = new Reflection(logger);
         this.serverVersion = reflection.getCraftBukkitVersion().substring(1);
         this.versionClasses = new ListOf<>(
             new Mapped<>(
-                VersionClass<T>::new,
+                input -> new VersionClass<>(logger, input),
                 new IterableOf<>(classes)
             )
         );
@@ -91,7 +91,7 @@ public class VersionMatched<T> {
             input -> input.match(serverVersion),
             versionClasses,
             () -> {
-                logger.severe("[Version-Matched] -> #match() couldn't find any matched class on \"" + serverVersion + "\" version!");
+                logger.severe("VersionMatched#match() -> Couldn't find any matched class on \"" + serverVersion + "\" version!");
                 return null;
             }
         );
