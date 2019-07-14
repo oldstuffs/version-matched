@@ -29,6 +29,11 @@ public class VersionMatched<T> {
     private final Reflection reflection;
 
     /**
+     * Logger class
+     */
+    private final Logger logger;
+
+    /**
      * You server version (i.e. 1_14_R1, 1_8_R2)
      */
     private final String serverVersion;
@@ -49,6 +54,7 @@ public class VersionMatched<T> {
         if (classes.length == 0)
             throw new NoSuchElementException("#VersionMatched(#Logger, #Class<T>[]) There is not any class element!");
 
+        this.logger = logger;
         this.reflection = new Reflection(logger);
         this.serverVersion = reflection.getCraftBukkitVersion().substring(1);
         this.versionClasses = new ListOf<>(
@@ -67,7 +73,11 @@ public class VersionMatched<T> {
      */
     @Nullable
     public T instance(Object... args) {
-        return reflection.newInstance(match(), args);
+        final Class<? extends T> match = match();
+        if (match == null)
+            return null;
+        else
+            return reflection.newInstance(match, args);
     }
 
     /**
@@ -75,22 +85,21 @@ public class VersionMatched<T> {
      *
      * @return class that match or throw exception
      */
+    @Nullable
     private Class<? extends T> match() {
         final Scalar<VersionClass<T>> firsOf = new FirstOf<>(
             input -> input.match(serverVersion),
             versionClasses,
             () -> {
-                throw new RuntimeException(
-                    "#match() couldn't find any matched class on \"" + serverVersion + "\" version!"
-                );
+                logger.severe("[Version-Matched] -> #match() couldn't find any matched class on \"" + serverVersion + "\" version!");
+                return null;
             }
         );
 
         try {
             return firsOf.value().getVersionClass();
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
+            return null;
         }
     }
 
