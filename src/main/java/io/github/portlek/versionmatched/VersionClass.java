@@ -45,10 +45,8 @@ class VersionClass<T> {
     private String version() {
         final int subString = versionSubString();
 
-        if (subString == -1) {
+        if (subString == -1)
             logger.severe("VersionClass#version() -> Invalid name for \"" + clazz.getSimpleName() + "\"");
-            return "";
-        }
 
         return rawClassName.substring(subString);
     }
