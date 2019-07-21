@@ -48,8 +48,8 @@
             <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
         </repository>
         <repository>
-            <id>bintray-portlek-portlek</id>
-            <url>https://dl.bintray.com/portlek/portlek</url>
+            <id>jcenter</id>
+            <url>https://jcenter.bintray.com/</url>
         </repository>
     </repositories>
 
