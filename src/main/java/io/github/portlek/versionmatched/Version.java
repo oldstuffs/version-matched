@@ -29,10 +29,16 @@ public class Version {
     @NotNull
     private final String version;
 
+    /**
+     * @param version Minecraft server package name
+     */
     public Version(@NotNull final String version) {
         this.version = version;
     }
 
+    /**
+     * Initiates with current running server package name
+     */
     public Version() {
         this(Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3].substring(1));
     }
