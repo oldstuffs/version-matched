@@ -3,14 +3,14 @@
 ### Using
 ```
 <repository>
-    <id>bintray-portlek-portlek</id>
-    <url>https://dl.bintray.com/portlek/portlek/</url>
+    <id>jcenter</id>
+    <url>https://jcenter.bintray.com/</url>
 </repository>
 
 <dependency>
     <groupId>io.github.portlek</groupId>
     <artifactId>version-matched</artifactId>
-    <version>1.1</version>
+    <version>1.0</version>
 </dependency>
 ```
 
