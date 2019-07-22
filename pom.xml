@@ -48,8 +48,8 @@
             <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
         </repository>
         <repository>
-            <id>jcenter</id>
-            <url>https://jcenter.bintray.com/</url>
+            <id>bintray-portlek-maven</id>
+            <url>https://dl.bintray.com/portlek/maven</url>
         </repository>
     </repositories>
 
@@ -84,9 +84,9 @@
 
     <distributionManagement>
         <repository>
-            <id>bintray-portlek-portlek</id>
-            <name>portlek-portlek</name>
-            <url>https://api.bintray.com/maven/portlek/portlek/version-matched/;publish=1</url>
+            <id>bintray-portlek-maven</id>
+            <name>portlek-maven</name>
+            <url>https://api.bintray.com/maven/portlek/maven/version-matched/;publish=1</url>
         </repository>
     </distributionManagement>
 
