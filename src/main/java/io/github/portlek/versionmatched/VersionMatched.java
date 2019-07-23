@@ -27,6 +27,7 @@ public class VersionMatched<T> {
     /**
      * Classes that match.
      */
+    @NotNull
     private final List<VersionClass<T>> versionClasses;
 
     /**
@@ -54,7 +55,7 @@ public class VersionMatched<T> {
      */
     @Nullable
     @SuppressWarnings("unchecked")
-    public T instance(Object... args) {
+    public T instance(@NotNull final Object... args) {
         final Class<? extends T> match = match();
 
         if (match == null)
