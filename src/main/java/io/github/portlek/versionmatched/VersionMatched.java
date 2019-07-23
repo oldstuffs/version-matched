@@ -70,17 +70,15 @@ public class VersionMatched<T> {
      */
     @Nullable
     private Class<? extends T> match() {
-        final FirstOf<VersionClass<T>> firsOf = new FirstOf<>(
-            input -> input.match(VERSION),
-            versionClasses,
-            () -> {
-                LOGGER.severe("match() -> Couldn't find any matched class on \"" + VERSION + "\" version!");
-                return null;
-            }
-        );
-
         try {
-            return firsOf.value().getVersionClass();
+            return new FirstOf<>(
+                input -> input.match(VERSION),
+                versionClasses,
+                () -> {
+                    LOGGER.severe("match() -> Couldn't find any matched class on \"" + VERSION + "\" version!");
+                    return null;
+                }
+            ).value().getVersionClass();
         } catch (Exception e) {
             return null;
         }
