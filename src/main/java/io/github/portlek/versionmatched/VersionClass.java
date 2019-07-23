@@ -1,5 +1,6 @@
 package io.github.portlek.versionmatched;
 
+import io.github.portlek.reflection.RefLogger;
 import org.cactoos.Scalar;
 import org.cactoos.iterable.IterableOfChars;
 import org.cactoos.scalar.FirstOf;
@@ -11,25 +12,22 @@ import java.util.logging.Logger;
 
 class VersionClass<T> {
 
-    private final static char[] NUMBERS = {
+    private static final Logger LOGGER = new RefLogger(VersionClass.class);
+    private static final char[] NUMBERS = {
         '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
     };
 
-    private final Logger logger;
     private final String rawClassName;
     private final Class<? extends T> clazz;
 
-    private VersionClass(@NotNull final Logger logger,
-                         @NotNull final String rawClassName,
+    private VersionClass(@NotNull final String rawClassName,
                          @NotNull final Class<? extends T> clazz) {
-        this.logger = logger;
         this.rawClassName = rawClassName;
         this.clazz = clazz;
     }
 
-    VersionClass(@NotNull final Logger logger,
-                 @NotNull final Class<? extends T> clazz) {
-        this(logger, clazz.getSimpleName(), clazz);
+    VersionClass(@NotNull final Class<? extends T> clazz) {
+        this(clazz.getSimpleName(), clazz);
     }
 
     @NotNull
@@ -46,7 +44,7 @@ class VersionClass<T> {
         final int subString = versionSubString();
 
         if (subString == -1)
-            logger.severe("VersionClass#version() -> Invalid name for \"" + clazz.getSimpleName() + "\"");
+            LOGGER.severe("VersionClass#version() -> Invalid name for \"" + clazz.getSimpleName() + "\"");
 
         return rawClassName.substring(subString);
     }

@@ -1,5 +1,6 @@
 package io.github.portlek.versionmatched;
 
+import io.github.portlek.reflection.RefLogger;
 import io.github.portlek.reflection.Reflection;
 import org.cactoos.Scalar;
 import org.cactoos.iterable.IterableOf;
@@ -21,17 +22,14 @@ import java.util.logging.Logger;
  */
 public class VersionMatched<T> {
 
+    private static final Logger LOGGER = new RefLogger(VersionMatched.class);
+
     /**
      * Reflection class
      *
      * @apiNote see https://github.com/portlek/reflection
      */
     private final Reflection reflection;
-
-    /**
-     * Logger class
-     */
-    private final Logger logger;
 
     /**
      * You server version (i.e. 1_14_R1, 1_8_R2)
@@ -44,22 +42,19 @@ public class VersionMatched<T> {
     private final List<VersionClass<T>> versionClasses;
 
     /**
-     * @param logger  Logger
      * @param classes Classes which will create objec
      *                (i.e. Cmd1_14_R2.class, CmdRgstry1_8_R3.class)
      */
     @SafeVarargs
-    public VersionMatched(@NotNull Logger logger,
-                          @NotNull final Class<? extends T>... classes) {
+    public VersionMatched(@NotNull final Class<? extends T>... classes) {
         if (classes.length == 0)
             throw new NoSuchElementException("#VersionMatched(#Logger, #Class<T>[]) -> There is not any class element!");
 
-        this.logger = logger;
-        this.reflection = new Reflection(logger);
+        this.reflection = new Reflection();
         this.serverVersion = reflection.getCraftBukkitVersion().substring(1);
         this.versionClasses = new ListOf<>(
             new Mapped<>(
-                input -> new VersionClass<>(logger, input),
+                VersionClass<T>::new,
                 new IterableOf<>(classes)
             )
         );
@@ -91,7 +86,7 @@ public class VersionMatched<T> {
             input -> input.match(serverVersion),
             versionClasses,
             () -> {
-                logger.severe("VersionMatched#match() -> Couldn't find any matched class on \"" + serverVersion + "\" version!");
+                LOGGER.severe("VersionMatched#match() -> Couldn't find any matched class on \"" + serverVersion + "\" version!");
                 return null;
             }
         );
