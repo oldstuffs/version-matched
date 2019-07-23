@@ -17,7 +17,10 @@ class VersionClass<T> {
         '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
     };
 
+    @NotNull
     private final String rawClassName;
+
+    @NotNull
     private final Class<? extends T> clazz;
 
     private VersionClass(@NotNull final String rawClassName,
@@ -35,7 +38,7 @@ class VersionClass<T> {
         return clazz;
     }
 
-    public boolean match(@NotNull final String version) {
+    boolean match(@NotNull final String version) {
         return version().equals(version);
     }
 
