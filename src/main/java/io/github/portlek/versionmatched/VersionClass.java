@@ -35,7 +35,7 @@ class VersionClass<T> {
         return clazz;
     }
 
-    boolean match(@NotNull final String version) {
+    public boolean match(@NotNull final String version) {
         return version().equals(version);
     }
 
