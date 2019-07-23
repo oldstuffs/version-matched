@@ -1,7 +1,6 @@
 package io.github.portlek.versionmatched;
 
 import io.github.portlek.reflection.LoggerOf;
-import org.cactoos.Scalar;
 import org.cactoos.iterable.IterableOfChars;
 import org.cactoos.scalar.FirstOf;
 import org.cactoos.scalar.Or;
@@ -54,7 +53,7 @@ class VersionClass<T> {
 
     private int versionSubString() {
         final AtomicInteger subString = new AtomicInteger();
-        final Scalar<Character> firstOf = new FirstOf<>(
+        final FirstOf<Character> firstOf = new FirstOf<>(
             input -> {
                 final boolean or = new Or(
                     number -> input.charValue() == number,

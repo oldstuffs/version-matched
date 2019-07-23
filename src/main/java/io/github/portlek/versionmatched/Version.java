@@ -49,6 +49,7 @@ public class Version {
      * @return raw string
      * @apiNote output is like that "<major>_<minor>_R<micro>"
      */
+    @NotNull
     public String raw() {
         return version;
     }
