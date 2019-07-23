@@ -44,7 +44,7 @@ class VersionClass<T> {
         final int subString = versionSubString();
 
         if (subString == -1)
-            LOGGER.severe("VersionClass#version() -> Invalid name for \"" + clazz.getSimpleName() + "\"");
+            LOGGER.severe("version() -> Invalid name for \"" + clazz.getSimpleName() + "\"");
 
         return rawClassName.substring(subString);
     }

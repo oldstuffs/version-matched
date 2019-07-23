@@ -36,7 +36,7 @@ public class VersionMatched<T> {
     @SafeVarargs
     public VersionMatched(@NotNull final Class<? extends T>... classes) {
         if (classes.length == 0)
-            throw new NoSuchElementException("#VersionMatched(#Logger, #Class<T>[]) -> There is not any class element!");
+            throw new NoSuchElementException("constructor(#Logger, #Class<T>[]) -> There is not any class element!");
 
         this.versionClasses = new ListOf<>(
             new Mapped<>(
@@ -74,7 +74,7 @@ public class VersionMatched<T> {
             input -> input.match(VERSION.raw()),
             versionClasses,
             () -> {
-                LOGGER.severe("VersionMatched#match() -> Couldn't find any matched class on \"" + VERSION.raw() + "\" version!");
+                LOGGER.severe("match() -> Couldn't find any matched class on \"" + VERSION.raw() + "\" version!");
                 return null;
             }
         );
