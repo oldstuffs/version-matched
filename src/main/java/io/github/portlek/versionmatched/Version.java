@@ -44,6 +44,16 @@ public class Version {
     }
 
     /**
+     * Gets raw string of the version
+     *
+     * @return raw string
+     * @apiNote output is like that "<major>_<minor>_R<micro>"
+     */
+    public String raw() {
+        return version;
+    }
+
+    /**
      * Gets major part of the version
      *
      * @return major part

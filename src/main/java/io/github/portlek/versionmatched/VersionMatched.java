@@ -1,8 +1,7 @@
 package io.github.portlek.versionmatched;
 
-import io.github.portlek.reflection.RefLogger;
-import io.github.portlek.reflection.Reflection;
-import org.cactoos.Scalar;
+import io.github.portlek.reflection.LoggerOf;
+import io.github.portlek.reflection.clazz.ClassOf;
 import org.cactoos.iterable.IterableOf;
 import org.cactoos.list.ListOf;
 import org.cactoos.list.Mapped;
@@ -22,19 +21,8 @@ import java.util.logging.Logger;
  */
 public class VersionMatched<T> {
 
-    private static final Logger LOGGER = new RefLogger(VersionMatched.class);
-
-    /**
-     * Reflection class
-     *
-     * @apiNote see https://github.com/portlek/reflection
-     */
-    private final Reflection reflection;
-
-    /**
-     * You server version (i.e. 1_14_R1, 1_8_R2)
-     */
-    private final String serverVersion;
+    private static final Logger LOGGER = new LoggerOf(VersionMatched.class);
+    private static final Version VERSION = new Version();
 
     /**
      * Classes that match.
@@ -50,8 +38,6 @@ public class VersionMatched<T> {
         if (classes.length == 0)
             throw new NoSuchElementException("#VersionMatched(#Logger, #Class<T>[]) -> There is not any class element!");
 
-        this.reflection = new Reflection();
-        this.serverVersion = reflection.getCraftBukkitVersion().substring(1);
         this.versionClasses = new ListOf<>(
             new Mapped<>(
                 VersionClass<T>::new,
@@ -67,12 +53,14 @@ public class VersionMatched<T> {
      * @return the object, or throws
      */
     @Nullable
+    @SuppressWarnings("unchecked")
     public T instance(Object... args) {
         final Class<? extends T> match = match();
+
         if (match == null)
             return null;
-        else
-            return reflection.newInstance(match, args);
+
+        return (T) new ClassOf(match).getConstructor(args).create(args);
     }
 
     /**
@@ -82,11 +70,11 @@ public class VersionMatched<T> {
      */
     @Nullable
     private Class<? extends T> match() {
-        final Scalar<VersionClass<T>> firsOf = new FirstOf<>(
-            input -> input.match(serverVersion),
+        final FirstOf<VersionClass<T>> firsOf = new FirstOf<>(
+            input -> input.match(VERSION.raw()),
             versionClasses,
             () -> {
-                LOGGER.severe("VersionMatched#match() -> Couldn't find any matched class on \"" + serverVersion + "\" version!");
+                LOGGER.severe("VersionMatched#match() -> Couldn't find any matched class on \"" + VERSION.raw() + "\" version!");
                 return null;
             }
         );
