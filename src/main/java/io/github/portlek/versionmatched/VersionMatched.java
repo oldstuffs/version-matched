@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 public class VersionMatched<T> {
 
     private static final Logger LOGGER = new LoggerOf(VersionMatched.class);
-    private static final Version VERSION = new Version();
+    private static final String VERSION = new Version().raw();
 
     /**
      * Classes that match.
@@ -71,10 +71,10 @@ public class VersionMatched<T> {
     @Nullable
     private Class<? extends T> match() {
         final FirstOf<VersionClass<T>> firsOf = new FirstOf<>(
-            input -> input.match(VERSION.raw()),
+            input -> input.match(VERSION),
             versionClasses,
             () -> {
-                LOGGER.severe("match() -> Couldn't find any matched class on \"" + VERSION.raw() + "\" version!");
+                LOGGER.severe("match() -> Couldn't find any matched class on \"" + VERSION + "\" version!");
                 return null;
             }
         );
