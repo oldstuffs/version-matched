@@ -10,7 +10,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.logging.Logger;
 
 /**
@@ -22,7 +21,13 @@ import java.util.logging.Logger;
 public class VersionMatched<T> {
 
     private static final Logger LOGGER = new LoggerOf(VersionMatched.class);
-    private static final String VERSION = new Version().raw();
+
+    /**
+     * Version of the server, pattern must be like that;
+     * 1_14_R1
+     * 1_13_R2
+     */
+    private final String rawVersion;
 
     /**
      * Classes that match.
@@ -31,18 +36,57 @@ public class VersionMatched<T> {
     private final List<VersionClass<T>> versionClasses;
 
     /**
-     * @param classes Classes which will create objec
-     *                (i.e. Cmd1_14_R2.class, CmdRgstry1_8_R3.class)
+     * @param rawVersion     Raw server version text
+     *                       (i.e 1_14_R1, 1_13_R1)
+     * @param versionClasses Classes which will create object
+     *                       (i.e. Cmd1_14_R2.class, CmdRgstry1_8_R3.class)
+     */
+    public VersionMatched(@NotNull final String rawVersion, @NotNull final List<VersionClass<T>> versionClasses) {
+        this.rawVersion = rawVersion;
+        this.versionClasses = versionClasses;
+    }
+
+    /**
+     * @param version        Server version
+     * @param versionClasses Classes which will create object
+     *                       (i.e. Cmd1_14_R2.class, CmdRgstry1_8_R3.class)
+     */
+    public VersionMatched(@NotNull final Version version, @NotNull final List<VersionClass<T>> versionClasses) {
+        this(version.raw(), versionClasses);
+    }
+
+    /**
+     * @param rawVersion     Raw server version text
+     *                       (i.e 1_14_R1, 1_13_R1)
+     * @param versionClasses Classes which will create object
+     *                       (i.e. Cmd1_14_R2.class, CmdRgstry1_8_R3.class)
      */
     @SafeVarargs
-    public VersionMatched(@NotNull final Class<? extends T>... classes) {
-        if (classes.length == 0)
-            throw new NoSuchElementException("constructor(#Logger, #Class<T>[]) -> There is not any class element!");
+    public VersionMatched(@NotNull final String rawVersion, @NotNull final Class<? extends T>... versionClasses) {
+        this(
+            rawVersion,
+            new ListOf<>(
+                new Mapped<>(
+                    VersionClass<T>::new,
+                    new IterableOf<>(versionClasses)
+                )
+            )
+        );
+    }
 
-        this.versionClasses = new ListOf<>(
-            new Mapped<>(
-                VersionClass<T>::new,
-                new IterableOf<>(classes)
+    /**
+     * @param versionClasses Classes which will create object
+     *                       (i.e. Cmd1_14_R2.class, CmdRgstry1_8_R3.class)
+     */
+    @SafeVarargs
+    public VersionMatched(@NotNull final Class<? extends T>... versionClasses) {
+        this(
+            new Version(),
+            new ListOf<>(
+                new Mapped<>(
+                    VersionClass<T>::new,
+                    new IterableOf<>(versionClasses)
+                )
             )
         );
     }
@@ -72,7 +116,7 @@ public class VersionMatched<T> {
      */
     @Nullable
     @SuppressWarnings("unchecked")
-    public T instanceHavePrimitive(@NotNull final Object... args) {
+    public T instancePrimitive(@NotNull final Object... args) {
         final Class<? extends T> match = match();
 
         if (match == null)
@@ -90,10 +134,10 @@ public class VersionMatched<T> {
     private Class<? extends T> match() {
         try {
             return new FirstOf<>(
-                input -> input.match(VERSION),
+                input -> input.match(rawVersion),
                 versionClasses,
                 () -> {
-                    LOGGER.severe("match() -> Couldn't find any matched class on \"" + VERSION + "\" version!");
+                    LOGGER.severe("match() -> Couldn't find any matched class on \"" + rawVersion + "\" version!");
                     return null;
                 }
             ).value().getVersionClass();

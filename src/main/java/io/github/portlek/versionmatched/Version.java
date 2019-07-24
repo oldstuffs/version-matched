@@ -94,7 +94,7 @@ public class Version {
     public int micro() {
         return new NumberOf(
             new Replaced(
-                new TextOf(version),
+                new TextOf(version.replaceAll("R", "")),
                 () -> PATTERN,
                 matcher -> matcher.group("micro")
             )
