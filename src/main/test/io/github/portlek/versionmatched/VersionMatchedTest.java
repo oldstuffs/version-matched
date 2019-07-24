@@ -23,7 +23,7 @@ class VersionMatchedTest {
     void instance() {
         new Assertion<>(
             "Cannot initiate the class",
-            VERSION_MATCHED.instance(),
+            VERSION_MATCHED.instance(this),
             new IsNot<>(
                 new IsNull<>()
             )
@@ -32,6 +32,13 @@ class VersionMatchedTest {
 
     @Test
     void instancePrimitive() {
+        new Assertion<>(
+            "Cannot initiate the class",
+            VERSION_MATCHED.instancePrimitive(this),
+            new IsNot<>(
+                new IsNull<>()
+            )
+        ).affirm();
     }
 
     private interface ITest {
