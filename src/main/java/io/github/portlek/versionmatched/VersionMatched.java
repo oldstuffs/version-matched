@@ -94,6 +94,8 @@ public class VersionMatched<T> {
     /**
      * Instantiates an object which is using <T>.
      *
+     * @apiNote for inner classes use instance(this, arguments);
+     *
      * @param args Constructor arguments
      * @return the object, or throws
      */
@@ -110,6 +112,8 @@ public class VersionMatched<T> {
 
     /**
      * Instantiates an object which is using <T>.
+     *
+     * @apiNote for inner classes use instancePrimitive(this, arguments);
      *
      * @param args Constructor arguments
      * @return the object, or throws
