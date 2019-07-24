@@ -65,6 +65,23 @@ public class VersionMatched<T> {
     }
 
     /**
+     * Instantiates an object which is using <T>.
+     *
+     * @param args Constructor arguments
+     * @return the object, or throws
+     */
+    @Nullable
+    @SuppressWarnings("unchecked")
+    public T instanceHavePrimitive(@NotNull final Object... args) {
+        final Class<? extends T> match = match();
+
+        if (match == null)
+            return null;
+
+        return (T) new ClassOf(match).getPrimitiveConstructor(args).create(args);
+    }
+
+    /**
      * Matches classes
      *
      * @return class that match or throw exception
