@@ -3,6 +3,7 @@ package io.github.portlek.versionmatched;
 import org.hamcrest.core.IsEqual;
 import org.junit.jupiter.api.Test;
 import org.llorllale.cactoos.matchers.Assertion;
+import org.llorllale.cactoos.matchers.IsTrue;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,7 +18,7 @@ class VersionClassTest {
             "Cannot get the class",
             versionClass.getVersionClass(),
             new IsEqual<>(Test1_14_R1.class)
-        );
+        ).affirm();
     }
 
     @Test
@@ -26,8 +27,8 @@ class VersionClassTest {
         new Assertion<>(
             "Cannot get the class",
             versionClass.match(MC_VERSION),
-            new IsEqual<>(Test1_13_R2.class)
-        );
+            new IsTrue()
+        ).affirm();
     }
 
     private interface ITest {
