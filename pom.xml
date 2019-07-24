@@ -104,6 +104,18 @@
             <version>17.0.0</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.llorllale</groupId>
+            <artifactId>cactoos-matchers</artifactId>
+            <version>0.17</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.5.1</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <distributionManagement>
