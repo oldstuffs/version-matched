@@ -158,7 +158,7 @@ public class VersionMatched<T> {
         }
     }
 
-    private class Instantiated {
+    public class Instantiated {
 
         @NotNull
         private final RefConstructed refConstructed;

@@ -19,7 +19,7 @@ class VersionMatchedTest {
     void instance() {
         new Assertion<>(
             "Cannot initiate the class",
-            VERSION_MATCHED.instance(),
+            VERSION_MATCHED.of(this).instance(this),
             new IsInstanceOf(ITest.class)
         ).affirm();
     }
@@ -28,11 +28,28 @@ class VersionMatchedTest {
     void instancePrimitive() {
         new Assertion<>(
             "Cannot initiate the class",
-            VERSION_MATCHED.instancePrimitive(),
+            VERSION_MATCHED.ofPrimitive(this).instance(this),
             new IsNot<>(
                 new IsNull<>()
             )
         ).affirm();
+    }
+
+    public interface ITest {
+    }
+
+    public class Test1_13_R2 implements ITest {
+
+        Test1_13_R2() {
+        }
+
+    }
+
+    public class Test1_14_R1 implements ITest {
+
+        Test1_14_R1() {
+        }
+
     }
 
 }
