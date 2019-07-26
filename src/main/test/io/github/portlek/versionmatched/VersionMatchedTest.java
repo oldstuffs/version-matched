@@ -1,5 +1,6 @@
 package io.github.portlek.versionmatched;
 
+import org.hamcrest.core.IsInstanceOf;
 import org.hamcrest.core.IsNot;
 import org.hamcrest.core.IsNull;
 import org.junit.jupiter.api.Test;
@@ -13,20 +14,13 @@ class VersionMatchedTest {
         Test1_14_R1.class,
         Test1_13_R2.class
     );
-    private final VersionMatched<ITest> INVERSE_VERSION_MATCHED = new VersionMatched<>(
-        MC_VERSION,
-        Test1_13_R2.class,
-        Test1_14_R1.class
-    );
 
     @Test
     void instance() {
         new Assertion<>(
             "Cannot initiate the class",
             VERSION_MATCHED.instance(this),
-            new IsNot<>(
-                new IsNull<>()
-            )
+            new IsInstanceOf(ITest.class)
         ).affirm();
     }
 
