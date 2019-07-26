@@ -1,7 +1,9 @@
 package io.github.portlek.versionmatched;
 
 import io.github.portlek.reflection.LoggerOf;
+import io.github.portlek.reflection.RefConstructed;
 import io.github.portlek.reflection.clazz.ClassOf;
+import io.github.portlek.reflection.mck.MckConstructed;
 import org.cactoos.iterable.IterableOf;
 import org.cactoos.list.ListOf;
 import org.cactoos.list.Mapped;
@@ -92,41 +94,47 @@ public class VersionMatched<T> {
     }
 
     /**
-     * Instantiates an object which is using <T>.
+     * Gets instantiated class
      *
-     * @apiNote for inner classes use instance(this, arguments);
-     *
-     * @param args Constructor arguments
-     * @return the object, or throws
+     * @param types constructor type
+     * @return {@link Instantiated}
      */
-    @Nullable
-    @SuppressWarnings("unchecked")
-    public T instance(@NotNull final Object... args) {
-        final Class<? extends T> match = match();
+    @NotNull
+    public Instantiated of(Object... types) {
+        final Class match = match();
 
         if (match == null)
-            return null;
+            return new Instantiated(
+                new MckConstructed()
+            );
 
-        return (T) new ClassOf(match).getConstructor(args).create(args);
+        return new Instantiated(
+            new ClassOf(
+                match
+            ).getConstructor(types)
+        );
     }
 
     /**
-     * Instantiates an object which is using <T>.
+     * Gets primitive instantiated class
      *
-     * @apiNote for inner classes use instancePrimitive(this, arguments);
-     *
-     * @param args Constructor arguments
-     * @return the object, or throws
+     * @param types constructor type
+     * @return {@link Instantiated}
      */
-    @Nullable
-    @SuppressWarnings("unchecked")
-    public T instancePrimitive(@NotNull final Object... args) {
-        final Class<? extends T> match = match();
+    @NotNull
+    public Instantiated ofPrimitive(Object... types) {
+        final Class match = match();
 
         if (match == null)
-            return null;
+            return new Instantiated(
+                new MckConstructed()
+            );
 
-        return (T) new ClassOf(match).getPrimitiveConstructor(args).create(args);
+        return new Instantiated(
+            new ClassOf(
+                match
+            ).getPrimitiveConstructor(types)
+        );
     }
 
     /**
@@ -148,6 +156,31 @@ public class VersionMatched<T> {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    private class Instantiated {
+
+        @NotNull
+        private final RefConstructed refConstructed;
+
+        public Instantiated(@NotNull final RefConstructed refConstructed) {
+            this.refConstructed = refConstructed;
+        }
+
+        /**
+         * Instantiates an object which is using <T>.
+         *
+         * @apiNote for inner classes use instance(this, arguments);
+         *
+         * @param args Constructor arguments
+         * @return the object, or throws
+         */
+        @Nullable
+        @SuppressWarnings("unchecked")
+        public T instance(@NotNull final Object... args) {
+            return (T) refConstructed.create(args);
+        }
+
     }
 
 }
