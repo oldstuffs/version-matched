@@ -53,6 +53,7 @@ class VersionClass<T> {
 
     private int versionSubString() {
         final AtomicInteger subString = new AtomicInteger();
+
         final FirstOf<Character> firstOf = new FirstOf<>(
             input -> {
                 final boolean or = new Or(
@@ -72,10 +73,10 @@ class VersionClass<T> {
 
         try {
             firstOf.value();
+
+            return subString.get();
         } catch (Exception e) {
             return -1;
         }
-
-        return subString.get();
     }
 }

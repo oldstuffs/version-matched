@@ -11,6 +11,7 @@ class VersionMatchedTest {
     private static final String MC_VERSION = "1_14_R1";
     private final VersionMatched<ITest> VERSION_MATCHED = new VersionMatched<>(
         MC_VERSION,
+        new MckTest(),
         Test1_14_R1.class,
         Test1_13_R2.class
     );
@@ -19,7 +20,7 @@ class VersionMatchedTest {
     void instance() {
         new Assertion<>(
             "Cannot initiate the class",
-            VERSION_MATCHED.of(this).instance(this),
+            VERSION_MATCHED.of().instance(),
             new IsInstanceOf(ITest.class)
         ).affirm();
     }
@@ -28,28 +29,34 @@ class VersionMatchedTest {
     void instancePrimitive() {
         new Assertion<>(
             "Cannot initiate the class",
-            VERSION_MATCHED.ofPrimitive(this).instance(this),
+            VERSION_MATCHED.ofPrimitive().instance(),
             new IsNot<>(
                 new IsNull<>()
             )
         ).affirm();
     }
 
-    public interface ITest {
+    interface ITest {
     }
 
-    public class Test1_13_R2 implements ITest {
+    private static class Test1_13_R2 implements ITest {
 
         Test1_13_R2() {
         }
 
     }
 
-    public class Test1_14_R1 implements ITest {
+    private static class Test1_14_R1 implements ITest {
 
         Test1_14_R1() {
         }
 
+    }
+
+    private static class MckTest implements ITest {
+
+        MckTest() {
+        }
     }
 
 }
