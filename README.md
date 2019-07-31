@@ -22,5 +22,5 @@ final VersionMatched<T> matched = new VersionMatched<>(
     andSooooOnnnnnn1_12_R1.class
 );
 
-T object = matched.instance(#ConstructorArguments);
+T object = matched.of(ParametersClass.class...).instance(#ConstructorArguments);
 ```
