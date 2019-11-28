@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 
-class VersionClass<T> {
+final class VersionClass<T> {
 
     private static final Logger LOGGER = new LoggerOf(VersionClass.class);
     private static final char[] NUMBERS = {
