@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
  * Gets minecraft version from
  * package version of the server.
  */
-public class Version {
+public final class Version {
 
     /**
      * Pattern of the server text
