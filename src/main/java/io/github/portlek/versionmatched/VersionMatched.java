@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  *
  * @param <T> The interface of classes.
  */
-public class VersionMatched<T> {
+public final class VersionMatched<T> {
 
     private static final Logger LOGGER = new LoggerOf(VersionMatched.class);
 
