@@ -1,16 +1,13 @@
 package io.github.portlek.versionmatched;
 
-import io.github.portlek.reflection.LoggerOf;
 import io.github.portlek.reflection.RefConstructed;
 import io.github.portlek.reflection.clazz.ClassOf;
 import org.cactoos.iterable.IterableOf;
 import org.cactoos.list.ListOf;
 import org.cactoos.list.Mapped;
-import org.cactoos.scalar.FirstOf;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * Matches classes with your server version and choose
@@ -19,8 +16,6 @@ import java.util.logging.Logger;
  * @param <T> The interface of classes.
  */
 public final class VersionMatched<T> {
-
-    private static final Logger LOGGER = new LoggerOf(VersionMatched.class);
 
     /**
      * Version of the server, pattern must be like that;
@@ -149,20 +144,14 @@ public final class VersionMatched<T> {
      * @return class that match or throw exception
      */
     @NotNull
-    @SuppressWarnings("unchecked")
     private Class<? extends T> match() {
-        try {
-            return new FirstOf<>(
-                input -> input.match(rawVersion),
-                versionClasses,
-                () -> {
-                    LOGGER.severe("match() -> Couldn't find any matched class on \"" + rawVersion + "\" version!");
-                    return new VersionClass<>((Class<? extends T>) fallback.getClass());
-                }
-            ).value().getVersionClass();
-        } catch (Exception e) {
-            return (Class<? extends T>) fallback.getClass();
+        for (VersionClass<T> versionClass : versionClasses) {
+            if (versionClass.match(rawVersion)) {
+                return versionClass.getVersionClass();
+            }
         }
+
+        throw new IllegalStateException("match() -> Couldn't find any matched class on \"" + rawVersion + "\" version!");
     }
 
     public class Instantiated {

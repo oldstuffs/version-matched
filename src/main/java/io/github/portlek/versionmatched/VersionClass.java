@@ -1,17 +1,11 @@
 package io.github.portlek.versionmatched;
 
-import io.github.portlek.reflection.LoggerOf;
-import org.cactoos.iterable.IterableOfChars;
-import org.cactoos.scalar.FirstOf;
-import org.cactoos.scalar.Or;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.logging.Logger;
 
 final class VersionClass<T> {
 
-    private static final Logger LOGGER = new LoggerOf(VersionClass.class);
     private static final char[] NUMBERS = {
         '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
     };
@@ -45,8 +39,9 @@ final class VersionClass<T> {
     private String version() {
         final int subString = versionSubString();
 
-        if (subString == -1)
-            LOGGER.severe("version() -> Invalid name for \"" + clazz.getSimpleName() + "\"");
+        if (subString == -1) {
+            throw new IllegalStateException("version() -> Invalid name for \"" + clazz.getSimpleName() + "\"");
+        }
 
         return rawClassName.substring(subString);
     }
@@ -54,29 +49,18 @@ final class VersionClass<T> {
     private int versionSubString() {
         final AtomicInteger subString = new AtomicInteger();
 
-        final FirstOf<Character> firstOf = new FirstOf<>(
-            input -> {
-                final boolean or = new Or(
-                    number -> input.charValue() == number,
-                    new IterableOfChars(NUMBERS)
-                ).value();
+        finalBreak:
+        for (char name : rawClassName.toCharArray()) {
+            for (int number : NUMBERS) {
+                if (name == number) {
+                    break finalBreak;
+                }
 
-                if (or)
-                    return true;
+            }
 
-                subString.incrementAndGet();
-                return false;
-            },
-            new IterableOfChars(rawClassName.toCharArray()),
-            () -> 'e'
-        );
-
-        try {
-            firstOf.value();
-
-            return subString.get();
-        } catch (Exception e) {
-            return -1;
+            subString.incrementAndGet();
         }
+
+        return subString.get();
     }
 }
