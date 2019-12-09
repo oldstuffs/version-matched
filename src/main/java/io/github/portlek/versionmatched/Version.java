@@ -18,7 +18,7 @@ public final class Version {
      * Pattern of the server text
      *
      * The pattern is like that
-     * <major>_<minor>_R<micro>
+     * (major)_(minor)_R(micro)
      */
     @NotNull
     private static final Pattern PATTERN = Pattern.compile("v?(?<major>[0-9]+)[._](?<minor>[0-9]+)(?:[._](?<micro>[0-9]+))?(?<sub>.*)");
@@ -47,7 +47,7 @@ public final class Version {
      * Gets raw string of the version
      *
      * @return raw string
-     * @apiNote output is like that "<major>_<minor>_R<micro>"
+     * output is like that "(major)_(minor)_R(micro)"
      */
     @NotNull
     public String raw() {
