@@ -88,7 +88,7 @@
         <dependency>
             <groupId>org.cactoos</groupId>
             <artifactId>cactoos</artifactId>
-            <version>0.43</version>
+            <version>0.44</version>
         </dependency>
         <!--To getting MineCraft server version-->
         <dependency>
