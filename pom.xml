@@ -9,7 +9,7 @@
     <version>1.0-SNAPSHOT</version>
     <name>version-matched</name>
     <packaging>jar</packaging>
-    <description>An API for parsing Bukkit version.</description>
+    <description>An API for matching the correct class that will be initiated by version.</description>
     <url>https://github.com/portlek/version-matched</url>
 
     <licenses>

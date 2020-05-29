@@ -1,4 +1,5 @@
 # Version Matched
+An API for matching the correct class that will be initiated by version.
 
 [![idea](https://www.elegantobjects.org/intellij-idea.svg)](https://www.jetbrains.com/idea/)
 [![rultor](https://www.rultor.com/b/yegor256/rultor)](https://www.rultor.com/p/portlek/version-matched)
