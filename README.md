@@ -8,7 +8,7 @@
 
 ### Using
 ```gradle
-implementation("io.github.portlek:version-mathced:2.5")
+implementation("io.github.portlek:version-mathced:${version}")
 ```
 ```xml
 <dependency>
