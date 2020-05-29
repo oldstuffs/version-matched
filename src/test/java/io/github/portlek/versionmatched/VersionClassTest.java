@@ -11,31 +11,34 @@ class VersionClassTest {
 
     @Test
     void getVersionClass() {
-        final VersionClass<ITest> versionClass = new VersionClass<>(Test1_14_R1.class);
+        final VersionClass<VersionClassTest.ITest> versionClass = new VersionClass<>(VersionClassTest.Test1_14_R1.class);
         new Assertion<>(
             "Cannot get the class",
             versionClass.getVersionClass(),
-            new IsEqual<>(Test1_14_R1.class)
+            new IsEqual<>(VersionClassTest.Test1_14_R1.class)
         ).affirm();
     }
 
     @Test
     void match() {
-        final VersionClass<ITest> versionClass = new VersionClass<>(Test1_14_R1.class);
+        final VersionClass<VersionClassTest.ITest> versionClass = new VersionClass<>(VersionClassTest.Test1_14_R1.class);
         new Assertion<>(
             "Cannot get the class",
-            versionClass.match(MC_VERSION),
+            versionClass.match(VersionClassTest.MC_VERSION),
             new IsTrue()
         ).affirm();
     }
 
     private interface ITest {
+
     }
 
-    private static class Test1_14_R1 implements ITest {
+    private static class Test1_14_R1 implements VersionClassTest.ITest {
+
     }
 
-    private static class Test1_13_R2 implements ITest {
+    private static class Test1_13_R2 implements VersionClassTest.ITest {
+
     }
 
 }

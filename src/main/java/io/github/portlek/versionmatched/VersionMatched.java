@@ -2,12 +2,11 @@ package io.github.portlek.versionmatched;
 
 import io.github.portlek.reflection.RefConstructed;
 import io.github.portlek.reflection.clazz.ClassOf;
-import org.cactoos.iterable.IterableOf;
-import org.cactoos.list.ListOf;
-import org.cactoos.list.Mapped;
-import org.jetbrains.annotations.NotNull;
-
+import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Matches classes with your server version and choose
@@ -26,116 +25,89 @@ public final class VersionMatched<T> {
     private final String rawVersion;
 
     /**
-     * If the matcher cannot find any matches, returns the fallback
-     */
-    @NotNull
-    private final T fallback;
-
-    /**
      * Classes that match.
      */
     @NotNull
     private final List<VersionClass<T>> versionClasses;
 
     /**
-     * @param rawVersion     Raw server version text
-     *                       (i.e 1_14_R1, 1_13_R1)
-     * @param fallback       Fallback object for null-safety
+     * @param rawVersion Raw server version text
+     * (i.e 1_14_R1, 1_13_R1)
      * @param versionClasses Classes which will create object
-     *                       (i.e. Cmd1_14_R2.class, CmdRgstry1_8_R3.class)
+     * (i.e. Cmd1_14_R2.class, CmdRgstry1_8_R3.class)
      */
-    public VersionMatched(@NotNull final String rawVersion, @NotNull final T fallback, @NotNull final List<VersionClass<T>> versionClasses) {
+    public VersionMatched(@NotNull final String rawVersion, @NotNull final List<VersionClass<T>> versionClasses) {
         this.rawVersion = rawVersion;
-        this.fallback = fallback;
         this.versionClasses = versionClasses;
     }
 
     /**
-     * @param version        Server version
-     * @param fallback       Fallback object for null-safety
+     * @param version Server version
      * @param versionClasses Classes which will create object
-     *                       (i.e. Cmd1_14_R2.class, CmdRgstry1_8_R3.class)
+     * (i.e. Cmd1_14_R2.class, CmdRgstry1_8_R3.class)
      */
-    public VersionMatched(@NotNull final Version version, @NotNull final T fallback, @NotNull final List<VersionClass<T>> versionClasses) {
-        this(
-            version.raw(),
-            fallback,
-            versionClasses
-        );
+    public VersionMatched(@NotNull final Version version, @NotNull final List<VersionClass<T>> versionClasses) {
+        this(version.raw(), versionClasses);
     }
 
     /**
-     * @param rawVersion     Raw server version text
-     *                       (i.e 1_14_R1, 1_13_R1)
-     * @param fallback       Fallback object for null-safety
+     * @param rawVersion Raw server version text
+     * (i.e 1_14_R1, 1_13_R1)
      * @param versionClasses Classes which will create object
-     *                       (i.e. Cmd1_14_R2.class, CmdRgstry1_8_R3.class)
+     * (i.e. Cmd1_14_R2.class, CmdRgstry1_8_R3.class)
      */
     @SafeVarargs
-    public VersionMatched(@NotNull final String rawVersion, @NotNull final T fallback, @NotNull final Class<? extends T>... versionClasses) {
+    public VersionMatched(@NotNull final String rawVersion, @NotNull final Class<? extends T>... versionClasses) {
         this(
             rawVersion,
-            fallback,
-            new ListOf<>(
-                new Mapped<>(
-                    VersionClass<T>::new,
-                    new IterableOf<>(
-                        versionClasses
-                    )
-                )
-            )
-        );
+            Arrays.stream(versionClasses)
+                .map((Function<Class<? extends T>, VersionClass<T>>) VersionClass::new)
+                .collect(Collectors.toList()));
     }
 
     /**
-     * @param fallback       Fallback object for null-safety
      * @param versionClasses Classes which will create object
-     *                       (i.e. Cmd1_14_R2.class, CmdRgstry1_8_R3.class)
+     * (i.e. Cmd1_14_R2.class, CmdRgstry1_8_R3.class)
      */
     @SafeVarargs
-    public VersionMatched(@NotNull final T fallback, @NotNull final Class<? extends T>... versionClasses) {
+    public VersionMatched(@NotNull final Class<? extends T>... versionClasses) {
         this(
             new Version(),
-            fallback,
-            new ListOf<>(
-                new Mapped<>(
-                    VersionClass<T>::new,
-                    new IterableOf<>(
-                        versionClasses
-                    )
-                )
-            )
-        );
+            Arrays.stream(versionClasses)
+                .map((Function<Class<? extends T>, VersionClass<T>>) VersionClass::new)
+                .collect(Collectors.toList()));
     }
 
     /**
      * Gets instantiated class
      *
      * @param types constructor type
-     * @return {@link Instantiated}
+     * @return {@link RefConstructed}
      */
     @NotNull
-    public Instantiated of(Object... types) {
-        return new Instantiated(
-            new ClassOf(
-                match()
-            ).getConstructor(types)
-        );
+    public RefConstructed<T> of(final Object... types) {
+        final Class<? extends T> match = this.match();
+        // noinspection unchecked
+        return (RefConstructed<T>) new ClassOf<>(match).getConstructor(types)
+            .orElseThrow(() ->
+                new IllegalStateException("match() -> Couldn't find any constructor on " +
+                    '"' + match.getSimpleName() + '"' + " version!"));
     }
 
     /**
      * Gets primitive instantiated class
      *
      * @param types constructor type
-     * @return {@link Instantiated}
+     * @return {@link RefConstructed}
      */
     @NotNull
-    public Instantiated ofPrimitive(Object... types) {
-        return new Instantiated(
-            new ClassOf(
-                match()
-            ).getPrimitiveConstructor(types)
-        );
+    public RefConstructed<T> ofPrimitive(final Object... types) {
+        final Class<? extends T> match = this.match();
+        // noinspection unchecked
+        return (RefConstructed<T>) new ClassOf<>(match).getPrimitiveConstructor(types)
+            .orElseThrow(() ->
+                new IllegalStateException("match() -> Couldn't find any constructor on " +
+                    '"' + match.getSimpleName() + '"' + " version!"));
     }
 
     /**
@@ -145,38 +117,13 @@ public final class VersionMatched<T> {
      */
     @NotNull
     private Class<? extends T> match() {
-        for (VersionClass<T> versionClass : versionClasses) {
-            if (versionClass.match(rawVersion)) {
-                return versionClass.getVersionClass();
-            }
-        }
-
-        throw new IllegalStateException("match() -> Couldn't find any matched class on \"" + rawVersion + "\" version!");
-    }
-
-    public class Instantiated {
-
-        @NotNull
-        private final RefConstructed refConstructed;
-
-        public Instantiated(@NotNull final RefConstructed refConstructed) {
-            this.refConstructed = refConstructed;
-        }
-
-        /**
-         * Instantiates an object which is using T.
-         *
-         * For inner classes use instance(this, arguments);
-         *
-         * @param args Constructor arguments
-         * @return the object, or throws
-         */
-        @NotNull
-        @SuppressWarnings("unchecked")
-        public T instance(@NotNull final Object... args) {
-            return (T) refConstructed.create(fallback, args);
-        }
-
+        return this.versionClasses.stream()
+            .filter(versionClass -> versionClass.match(this.rawVersion))
+            .map(VersionClass::getVersionClass)
+            .findFirst()
+            .orElseThrow(() ->
+                new IllegalStateException("match() -> Couldn't find any matched class on " +
+                    '"' + this.rawVersion + '"' + " version!"));
     }
 
 }

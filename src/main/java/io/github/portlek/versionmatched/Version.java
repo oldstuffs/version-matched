@@ -1,12 +1,9 @@
 package io.github.portlek.versionmatched;
 
-import org.bukkit.Bukkit;
-import org.cactoos.scalar.NumberOf;
-import org.cactoos.text.Replaced;
-import org.cactoos.text.TextOf;
-import org.jetbrains.annotations.NotNull;
-
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.bukkit.Bukkit;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Gets minecraft version from
@@ -16,12 +13,12 @@ public final class Version {
 
     /**
      * Pattern of the server text
-     *
+     * <p>
      * The pattern is like that
      * (major)_(minor)_R(micro)
      */
     @NotNull
-    private static final Pattern PATTERN = Pattern.compile("v?(?<major>[0-9]+)[._](?<minor>[0-9]+)(?:[._](?<micro>[0-9]+))?(?<sub>.*)");
+    private static final Pattern PATTERN = Pattern.compile("v?(?<major>[0-9]+)[._](?<minor>[0-9]+)(?:[._]R(?<micro>[0-9]+))?(?<sub>.*)");
 
     /**
      * Server version text
@@ -30,10 +27,10 @@ public final class Version {
     private final String version;
 
     /**
-     * @param version Minecraft server package name
+     * @param vrsn Minecraft server package name
      */
-    public Version(@NotNull final String version) {
-        this.version = version;
+    public Version(@NotNull final String vrsn) {
+        this.version = vrsn;
     }
 
     /**
@@ -51,7 +48,7 @@ public final class Version {
      */
     @NotNull
     public String raw() {
-        return version;
+        return this.version;
     }
 
     /**
@@ -60,15 +57,7 @@ public final class Version {
      * @return major part
      */
     public int major() {
-        return new NumberOf(
-            new Replaced(
-                new TextOf(
-                    version
-                ),
-                () -> PATTERN,
-                matcher -> matcher.group("major")
-            )
-        ).intValue();
+        return this.get("major");
     }
 
     /**
@@ -77,13 +66,7 @@ public final class Version {
      * @return minor part
      */
     public int minor() {
-        return new NumberOf(
-            new Replaced(
-                new TextOf(version),
-                () -> PATTERN,
-                matcher -> matcher.group("minor")
-            )
-        ).intValue();
+        return this.get("minor");
     }
 
     /**
@@ -92,19 +75,19 @@ public final class Version {
      * @return micro part
      */
     public int micro() {
-        return new NumberOf(
-            new Replaced(
-                new Replaced(
-                    new TextOf(
-                        version
-                    ),
-                    "R",
-                    ""
-                ),
-                () -> PATTERN,
-                matcher -> matcher.group("micro")
-            )
-        ).intValue();
+        return this.get("micro");
+    }
+
+    private int get(@NotNull final String key) {
+        final Matcher matcher = Version.PATTERN.matcher(this.version);
+        final int number;
+        if (matcher.matches()) {
+            final String group = matcher.group(key);
+            number = Integer.parseInt(group);
+        } else {
+            number = 0;
+        }
+        return number;
     }
 
 }

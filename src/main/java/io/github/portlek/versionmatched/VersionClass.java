@@ -1,14 +1,11 @@
 package io.github.portlek.versionmatched;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.concurrent.atomic.AtomicInteger;
+import org.jetbrains.annotations.NotNull;
 
 final class VersionClass<T> {
 
-    private static final char[] NUMBERS = {
-        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
-    };
+    private static final char[] NUMBERS = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
 
     @NotNull
     private final String rawClassName;
@@ -28,39 +25,34 @@ final class VersionClass<T> {
 
     @NotNull
     Class<? extends T> getVersionClass() {
-        return clazz;
+        return this.clazz;
     }
 
     boolean match(@NotNull final String version) {
-        return version().equals(version);
+        return this.version().equals(version);
     }
 
     @NotNull
     private String version() {
-        final int subString = versionSubString();
-
-        if (subString == -1) {
-            throw new IllegalStateException("version() -> Invalid name for \"" + clazz.getSimpleName() + "\"");
+        final int sub = this.versionSubString();
+        if (sub == -1) {
+            throw new IllegalStateException("version() -> Invalid name for " + '"' + this.clazz.getSimpleName() + '"');
         }
-
-        return rawClassName.substring(subString);
+        return this.rawClassName.substring(sub);
     }
 
     private int versionSubString() {
         final AtomicInteger subString = new AtomicInteger();
-
         finalBreak:
-        for (char name : rawClassName.toCharArray()) {
-            for (int number : NUMBERS) {
+        for (final char name : this.rawClassName.toCharArray()) {
+            for (final int number : VersionClass.NUMBERS) {
                 if (name == number) {
                     break finalBreak;
                 }
-
             }
-
             subString.incrementAndGet();
         }
-
         return subString.get();
     }
+
 }
