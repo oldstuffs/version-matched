@@ -1,5 +1,11 @@
 # version-matched
 
+[![idea](https://www.elegantobjects.org/intellij-idea.svg)](https://www.jetbrains.com/idea/)
+[![rultor](https://www.rultor.com/b/yegor256/rultor)](https://www.rultor.com/p/portlek/version-matched)
+
+[![Build Status](https://travis-ci.com/portlek/version-matched.svg?branch=master)](https://travis-ci.com/portlek/version-matched)
+![Maven Central](https://img.shields.io/maven-central/v/io.github.portlek/version-matched?label=version)
+
 ### Using
 ```gradle
 implementation("io.github.portlek:version-mathced:2.5")
