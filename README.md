@@ -19,7 +19,7 @@ implementation("io.github.portlek:version-mathced:${version}")
 </dependency>
 ```
 
-## Using
+## Usage
 ```java
 private final VersionMatched<CommandRegistry> matched = new VersionMatched<>(
     CmdRgstry1_14_R1.class,
