@@ -7,7 +7,7 @@ An API for matching the correct class that will be initiated by version.
 [![Build Status](https://travis-ci.com/portlek/version-matched.svg?branch=master)](https://travis-ci.com/portlek/version-matched)
 ![Maven Central](https://img.shields.io/maven-central/v/io.github.portlek/version-matched?label=version)
 
-### Setup
+## Setup
 ```gradle
 implementation("io.github.portlek:version-mathced:${version}")
 ```
@@ -19,7 +19,7 @@ implementation("io.github.portlek:version-mathced:${version}")
 </dependency>
 ```
 
-### Using
+## Using
 ```java
 private final VersionMatched<CommandRegistry> matched = new VersionMatched<>(
     CmdRgstry1_14_R1.class,
