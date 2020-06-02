@@ -8,6 +8,10 @@ An API for matching the correct class that will be initiated by version.
 ![Maven Central](https://img.shields.io/maven-central/v/io.github.portlek/version-matched?label=version)
 
 ## Setup
+
+<details>
+<summary>Gradle</summary>
+    
 ```gradle
 repositories {
     mavenCentral()
@@ -17,6 +21,10 @@ dependencies {
     implementation("io.github.portlek:version-mathced:${version}")
 }
 ```
+</details>
+<details>
+<summary>Maven</summary>
+
 ```xml
 <dependencies>
     <dependency>
@@ -26,6 +34,7 @@ dependencies {
     </dependency>
 </dependencies>
 ```
+</details>
 
 ## Usage
 ```java
