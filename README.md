@@ -9,14 +9,22 @@ An API for matching the correct class that will be initiated by version.
 
 ## Setup
 ```gradle
-implementation("io.github.portlek:version-mathced:${version}")
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation("io.github.portlek:version-mathced:${version}")
+}
 ```
 ```xml
-<dependency>
-    <groupId>io.github.portlek</groupId>
-    <artifactId>version-matched</artifactId>
-    <version>${version}</version>
-</dependency>
+<dependencies>
+    <dependency>
+        <groupId>io.github.portlek</groupId>
+        <artifactId>version-matched</artifactId>
+        <version>${version}</version>
+    </dependency>
+</dependencies>
 ```
 
 ## Usage
