@@ -8,7 +8,6 @@ An API for matching the correct class that will be initiated by version.
 ![Maven Central](https://img.shields.io/maven-central/v/io.github.portlek/version-matched?label=version)
 
 ## Setup
-
 <details>
 <summary>Gradle</summary>
     
