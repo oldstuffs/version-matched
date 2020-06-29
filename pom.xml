@@ -179,12 +179,12 @@
         <dependency>
             <groupId>io.github.portlek</groupId>
             <artifactId>reflection</artifactId>
-            <version>3.0</version>
+            <version>3.1.2</version>
         </dependency>
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
-            <version>1.15.2-R0.1-SNAPSHOT</version>
+            <version>1.16.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
