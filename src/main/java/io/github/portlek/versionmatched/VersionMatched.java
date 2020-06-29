@@ -88,7 +88,7 @@ public final class VersionMatched<T> {
     public RefConstructed<T> of(final Object... types) {
         final Class<? extends T> match = this.match();
         // noinspection unchecked
-        return (RefConstructed<T>) new ClassOf<>(match).getConstructor(types)
+        return (RefConstructed<T>) new ClassOf<>(match).constructor(types)
             .orElseThrow(() ->
                 new IllegalStateException("match() -> Couldn't find any constructor on " +
                     '"' + match.getSimpleName() + '"' + " version!"));
@@ -104,7 +104,7 @@ public final class VersionMatched<T> {
     public RefConstructed<T> ofPrimitive(final Object... types) {
         final Class<? extends T> match = this.match();
         // noinspection unchecked
-        return (RefConstructed<T>) new ClassOf<>(match).getPrimitiveConstructor(types)
+        return (RefConstructed<T>) new ClassOf<>(match).primitiveConstructor(types)
             .orElseThrow(() ->
                 new IllegalStateException("match() -> Couldn't find any constructor on " +
                     '"' + match.getSimpleName() + '"' + " version!"));
