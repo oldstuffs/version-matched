@@ -1,11 +1,39 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2020 Hasan Demirtaş
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *
+ */
+
 package io.github.portlek.versionmatched;
 
+import io.github.portlek.bukkitversion.BukkitVersion;
 import io.github.portlek.reflection.RefConstructed;
 import io.github.portlek.reflection.clazz.ClassOf;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandMap;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -46,8 +74,8 @@ public final class VersionMatched<T> {
      * @param versionClasses Classes which will create object
      * (i.e. Cmd1_14_R2.class, CmdRgstry1_8_R3.class)
      */
-    public VersionMatched(@NotNull final Version version, @NotNull final List<VersionClass<T>> versionClasses) {
-        this(version.raw(), versionClasses);
+    public VersionMatched(@NotNull final BukkitVersion version, @NotNull final List<VersionClass<T>> versionClasses) {
+        this(version.getVersion(), versionClasses);
     }
 
     /**
@@ -72,7 +100,7 @@ public final class VersionMatched<T> {
     @SafeVarargs
     public VersionMatched(@NotNull final Class<? extends T>... versionClasses) {
         this(
-            new Version(),
+            new BukkitVersion(),
             Arrays.stream(versionClasses)
                 .map((Function<Class<? extends T>, VersionClass<T>>) VersionClass::new)
                 .collect(Collectors.toList()));
