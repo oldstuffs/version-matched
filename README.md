@@ -18,19 +18,19 @@ implementation("io.github.portlek:version-mathced:${version}")
 ```java
 final class Example {
 
-    final VersionMatched<CommandRegistry> matched = new VersionMatched<>(
-        CmdRgstry1_14_R1.class,
-        CmdRegistry1_13_R2.class,
-        CommandRgstry1_13_R1.class,
-        andSooooOnnnnnn1_12_R1.class
-    );
+  final VersionMatched<CommandRegistry> matched = new VersionMatched<>(
+    CmdRgstry1_14_R1.class,
+    CmdRegistry1_13_R2.class,
+    CommandRgstry1_13_R1.class,
+    andSooooOnnnnnn1_12_R1.class
+  );
     
-    @NotNull
-    CommandRegistry getCommandRegistry() {
-      return this.matched.of(/*Constructor Parameter's Types*/)
-        .create(/*Constructor Parameters*/)
-        .orElse(new NullCommandRegistry());
-    }
+  @NotNull
+  CommandRegistry getCommandRegistry() {
+    return this.matched.of(/*Constructor Parameter's Types*/)
+      .create(/*Constructor Parameters*/)
+      .orElse(new NullCommandRegistry());
+  }
 
 }
 ```
