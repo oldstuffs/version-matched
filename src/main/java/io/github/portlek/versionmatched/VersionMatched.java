@@ -44,9 +44,7 @@ import org.jetbrains.annotations.NotNull;
 public final class VersionMatched<T> {
 
   /**
-   * version of the server, pattern must be like that;
-   * 1_14_R1
-   * 1_13_R2
+   * version of the server, pattern must be like that 1_14_R1 1_13_R2.
    */
   @NotNull
   private final String rawVersion;
