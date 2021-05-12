@@ -18,6 +18,9 @@
     <connection>scm:git:git://github.com/portlek/version-matched.git</connection>
     <developerConnection>scm:git:ssh://github.com/portlek/version-matched.git</developerConnection>
   </scm>
+  <properties>
+    <java.version>11</java.version>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>io.github.portlek</groupId>
@@ -36,6 +39,18 @@
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest-library</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.llorllale</groupId>
+      <artifactId>cactoos-matchers</artifactId>
     </dependency>
     <dependency>
       <groupId>org.spigotmc</groupId>
