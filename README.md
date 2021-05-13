@@ -1,6 +1,6 @@
 [![idea](https://www.elegantobjects.org/intellij-idea.svg)](https://www.jetbrains.com/idea/)
 
-[![Build Status](https://travis-ci.com/portlek/version-matched.svg?branch=master)](https://travis-ci.com/portlek/version-matched)
+![master](https://github.com/portlek/version-matched/workflows/build/badge.svg)
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.portlek/version-matched?label=version)](https://repo1.maven.org/maven2/io/github/portlek/version-matched/)
 
 ## How to Use
