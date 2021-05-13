@@ -29,7 +29,7 @@ import io.github.portlek.bukkitversion.BukkitVersion;
 import io.github.portlek.reflection.RefConstructed;
 import io.github.portlek.reflection.clazz.ClassOf;
 import java.util.Arrays;
-import java.util.List;
+import java.util.Collection;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -47,13 +47,13 @@ public final class VersionMatched<T> {
    * version of the server, pattern must be like that 1_14_R1 1_13_R2.
    */
   @NotNull
-  private final String rawVersion;
+  private final BukkitVersion version;
 
   /**
    * classes that match.
    */
   @NotNull
-  private final List<VersionClass<T>> versionClasses;
+  private final Collection<VersionClass<T>> versionClasses;
 
   /**
    * ctor.
@@ -61,19 +61,19 @@ public final class VersionMatched<T> {
    * @param version the version.
    * @param versionClasses the version classes.
    */
-  public VersionMatched(@NotNull final BukkitVersion version, @NotNull final List<VersionClass<T>> versionClasses) {
-    this(version.getVersion(), versionClasses);
+  public VersionMatched(@NotNull final String version, @NotNull final Collection<VersionClass<T>> versionClasses) {
+    this(new BukkitVersion(version), versionClasses);
   }
 
   /**
    * ctor.
    *
-   * @param rawVersion the raw version.
+   * @param version the version.
    * @param versionClasses the version classes.
    */
   @SafeVarargs
-  public VersionMatched(@NotNull final String rawVersion, @NotNull final Class<? extends T>... versionClasses) {
-    this(rawVersion,
+  public VersionMatched(@NotNull final String version, @NotNull final Class<? extends T>... versionClasses) {
+    this(version,
       Arrays.stream(versionClasses)
         .map((Function<Class<? extends T>, VersionClass<T>>) VersionClass::new)
         .collect(Collectors.toList()));
@@ -134,11 +134,11 @@ public final class VersionMatched<T> {
   @NotNull
   private Class<? extends T> match() {
     return this.versionClasses.stream()
-      .filter(versionClass -> versionClass.match(this.rawVersion))
+      .filter(versionClass -> versionClass.match(this.version))
       .map(VersionClass::getVersionClass)
       .findFirst()
       .orElseThrow(() ->
         new IllegalStateException(String.format("match() -> Couldn't find any matched class on \"%s\" version!",
-          this.rawVersion)));
+          this.version.getVersion())));
   }
 }

@@ -26,6 +26,7 @@
 package io.github.portlek.versionmatched;
 
 import com.google.common.base.Preconditions;
+import io.github.portlek.bukkitversion.BukkitVersion;
 import java.util.concurrent.atomic.AtomicInteger;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -73,7 +74,7 @@ final class VersionClass<T> {
    *
    * @return {@code true} if the version matched.
    */
-  boolean match(@NotNull final String version) {
+  boolean match(@NotNull final BukkitVersion version) {
     return this.version().equals(version);
   }
 
@@ -83,10 +84,10 @@ final class VersionClass<T> {
    * @return version.
    */
   @NotNull
-  private String version() {
+  private BukkitVersion version() {
     final var sub = this.versionSubString();
-    Preconditions.checkState(sub != -1, "version() -> Invalid name for \"%s\"", this.versionClass.getSimpleName());
-    return this.rawClassName.substring(sub);
+    Preconditions.checkState(sub != -1, "version() -> Invalid name for \"%s\"", this.rawClassName);
+    return new BukkitVersion(this.rawClassName.substring(sub));
   }
 
   /**

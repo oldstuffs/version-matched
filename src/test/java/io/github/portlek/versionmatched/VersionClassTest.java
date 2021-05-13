@@ -1,5 +1,6 @@
 package io.github.portlek.versionmatched;
 
+import io.github.portlek.bukkitversion.BukkitVersion;
 import org.hamcrest.core.IsEqual;
 import org.junit.jupiter.api.Test;
 import org.llorllale.cactoos.matchers.Assertion;
@@ -7,11 +8,11 @@ import org.llorllale.cactoos.matchers.IsTrue;
 
 final class VersionClassTest {
 
-  private static final String MC_VERSION = "1_14_R1";
+  private static final BukkitVersion MC_VERSION = new BukkitVersion("1_14_R1");
 
   @Test
   void getVersionClass() {
-    final VersionClass<VersionClassTest.ITest> versionClass = new VersionClass<>(VersionClassTest.Test1_14_R1.class);
+    final var versionClass = new VersionClass<>(VersionClassTest.Test1_14_R1.class);
     new Assertion<>(
       "Cannot get the class",
       versionClass.getVersionClass(),
@@ -21,7 +22,7 @@ final class VersionClassTest {
 
   @Test
   void match() {
-    final VersionClass<VersionClassTest.ITest> versionClass = new VersionClass<>(VersionClassTest.Test1_14_R1.class);
+    final var versionClass = new VersionClass<>(VersionClassTest.Test1_14_R1.class);
     new Assertion<>(
       "Cannot get the class",
       versionClass.match(VersionClassTest.MC_VERSION),
