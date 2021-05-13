@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2020 Hasan Demirtaş
+ * Copyright (c) 2021 Hasan Demirtaş
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,59 +25,87 @@
 
 package io.github.portlek.versionmatched;
 
+import com.google.common.base.Preconditions;
+import io.github.portlek.bukkitversion.BukkitVersion;
 import java.util.concurrent.atomic.AtomicInteger;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * a class that represents version classes.
+ *
+ * @param <T> type of the class.
+ */
+@RequiredArgsConstructor
 final class VersionClass<T> {
 
-    private static final char[] NUMBERS = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+  /**
+   * the numbers.
+   */
+  private static final char[] NUMBERS = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
 
-    @NotNull
-    private final String rawClassName;
+  /**
+   * the raw class name.
+   */
+  @NotNull
+  private final String rawClassName;
 
-    @NotNull
-    private final Class<? extends T> clazz;
+  /**
+   * the version class.
+   */
+  @NotNull
+  @Getter
+  private final Class<? extends T> versionClass;
 
-    private VersionClass(@NotNull final String rawClassName,
-                         @NotNull final Class<? extends T> clazz) {
-        this.rawClassName = rawClassName;
-        this.clazz = clazz;
-    }
+  /**
+   * ctor.
+   *
+   * @param versionClass the version class.
+   */
+  VersionClass(@NotNull final Class<? extends T> versionClass) {
+    this(versionClass.getSimpleName(), versionClass);
+  }
 
-    VersionClass(@NotNull final Class<? extends T> clazz) {
-        this(clazz.getSimpleName(), clazz);
-    }
+  /**
+   * matches the given version.
+   *
+   * @param version the version to match.
+   *
+   * @return {@code true} if the version matched.
+   */
+  boolean match(@NotNull final BukkitVersion version) {
+    return this.version().equals(version);
+  }
 
-    @NotNull
-    Class<? extends T> getVersionClass() {
-        return this.clazz;
-    }
+  /**
+   * obtains the version.
+   *
+   * @return version.
+   */
+  @NotNull
+  private BukkitVersion version() {
+    final var sub = this.versionSubString();
+    Preconditions.checkState(sub != -1, "version() -> Invalid name for \"%s\"", this.rawClassName);
+    return new BukkitVersion(this.rawClassName.substring(sub));
+  }
 
-    boolean match(@NotNull final String version) {
-        return this.version().equals(version);
-    }
-
-    @NotNull
-    private String version() {
-        final int sub = this.versionSubString();
-        if (sub == -1) {
-            throw new IllegalStateException("version() -> Invalid name for " + '"' + this.clazz.getSimpleName() + '"');
+  /**
+   * obtains the version sub string.
+   *
+   * @return version sub string.
+   */
+  private int versionSubString() {
+    final var subString = new AtomicInteger();
+    finalBreak:
+    for (final var name : this.rawClassName.toCharArray()) {
+      for (final var number : VersionClass.NUMBERS) {
+        if (name == number) {
+          break finalBreak;
         }
-        return this.rawClassName.substring(sub);
+      }
+      subString.incrementAndGet();
     }
-
-    private int versionSubString() {
-        final AtomicInteger subString = new AtomicInteger();
-        finalBreak:
-        for (final char name : this.rawClassName.toCharArray()) {
-            for (final int number : VersionClass.NUMBERS) {
-                if (name == number) {
-                    break finalBreak;
-                }
-            }
-            subString.incrementAndGet();
-        }
-        return subString.get();
-    }
-
+    return subString.get();
+  }
 }
